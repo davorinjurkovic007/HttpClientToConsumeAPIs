@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Movie.Client.Services;
+using Movies.Client.Services;
 using System;
 using System.Threading.Tasks;
 
-namespace Movie.Client
+namespace Movies.Client
 {
     class Program
     {

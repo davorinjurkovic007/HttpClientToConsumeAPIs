@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Movie.Client.Services
+namespace Movies.Client.Services
 {
     public class CancellationService : IIntegrationService
     {
