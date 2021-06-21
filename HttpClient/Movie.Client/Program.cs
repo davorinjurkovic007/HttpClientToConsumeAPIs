@@ -54,11 +54,10 @@ namespace Movies.Client
             // register the integration service on our container with a scoped lifetime
 
             // For the CRUD demos
-            serviceCollection.AddScoped<IIntegrationService, CRUDService>();
+            // serviceCollection.AddScoped<IIntegrationService, CRUDService>();
 
             // For the partial update demos
+            serviceCollection.AddScoped<IIntegrationService, PartialUpdateService>();
         }
-
-
     }
 }
