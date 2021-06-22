@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Movies.Client.Services;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Movies.Client
@@ -51,7 +52,40 @@ namespace Movies.Client
             // add loggers
             serviceCollection.AddLogging(configure => configure.AddDebug().AddConsole());
 
-            serviceCollection.AddHttpClient();
+            serviceCollection.AddHttpClient("MoviesClient", client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:5001");
+                client.Timeout = new TimeSpan(0, 0, 30);
+                client.DefaultRequestHeaders.Clear();
+            })
+            .ConfigurePrimaryHttpMessageHandler(handler =>
+                new HttpClientHandler()
+                {
+                    AutomaticDecompression = System.Net.DecompressionMethods.GZip
+                });
+
+            //// This registers our MoviesClient with a transient scope.
+            //// The factory will automatically create an instance of HttpClient with whichever configuration
+            //// we input when an instance of MoviesClient is requested from the DI system.
+            //serviceCollection.AddHttpClient<MoviesClient>(client =>
+            //{
+            //    client.BaseAddress = new Uri("https://localhost:5001");
+            //    client.Timeout = new TimeSpan(0, 0, 30);
+            //    client.DefaultRequestHeaders.Clear();
+            //})
+            //.ConfigurePrimaryHttpMessageHandler(handler =>
+            //    new HttpClientHandler()
+            //    {
+            //        AutomaticDecompression = System.Net.DecompressionMethods.GZip
+            //    });
+
+            // New configuration for MovieClient class to add data. 
+            serviceCollection.AddHttpClient<MoviesClient>()
+                .ConfigurePrimaryHttpMessageHandler(handlers =>
+                    new HttpClientHandler()
+                    {
+                        AutomaticDecompression = System.Net.DecompressionMethods.GZip
+                    });
 
             // register the integration service on our container with a scoped lifetime
 
