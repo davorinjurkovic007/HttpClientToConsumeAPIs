@@ -58,6 +58,12 @@ namespace Movies.Client
                 client.Timeout = new TimeSpan(0, 0, 30);
                 client.DefaultRequestHeaders.Clear();
             })
+                // start building the pipeline
+            // Important here is ensuring that the timeout we set on out handler is lower than the timeout specified at HttpClient level;
+            // otherwise, we will just end up with a TaskCanceledException again
+            .AddHttpMessageHandler(handler => new TimeOutDelegatingHandler(TimeSpan.FromSeconds(20)))
+            .AddHttpMessageHandler(handlers => new RetryPolicyDelegatingHandler(2))
+            // The handlers are added in the order we registered them, and the primary message handler is the last one in the pipeline
             .ConfigurePrimaryHttpMessageHandler(handler =>
                 new HttpClientHandler()
                 {
@@ -105,7 +111,10 @@ namespace Movies.Client
             // serviceCollection.AddScoped<IIntegrationService, HttpClientFactoryInstanceManagementService>();
 
             // For the dealing wiht errors and faults demos
-            serviceCollection.AddScoped<IIntegrationService, DealingWithErrorAndFaultsService>();
+            // serviceCollection.AddScoped<IIntegrationService, DealingWithErrorAndFaultsService>();
+
+            // For the custom http handlers demos
+            serviceCollection.AddScoped<IIntegrationService, HttpHandlersService>();
         }
     }
 }
