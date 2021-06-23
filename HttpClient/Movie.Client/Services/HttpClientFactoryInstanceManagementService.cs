@@ -31,7 +31,9 @@ namespace Movies.Client.Services
             // await GetMoviesWithHttpNamedClientFromFactory(cancellationTokenSource.Token);
             //await GetMoviesWithHttpTypedClientFromFactory(cancellationTokenSource.Token);
             await GetMoviesViaMoviesClient(cancellationTokenSource.Token);
-        }        private async Task TestDisposeHttpClient(CancellationToken cancellationToken)
+        }
+
+        private async Task TestDisposeHttpClient(CancellationToken cancellationToken)
         {
             for(var i = 0; i < 10; i++)
             {
@@ -48,7 +50,9 @@ namespace Movies.Client.Services
                     }
                 }
             }
-        }        private async Task TestReuseHttpClient(CancellationToken cancellationToken)
+        }
+
+        private async Task TestReuseHttpClient(CancellationToken cancellationToken)
         {
             var httpClient = new HttpClient();
             
@@ -65,7 +69,9 @@ namespace Movies.Client.Services
                 }
                 
             }
-        }        private async Task GetMoviesWithHttpClientFromFactory(CancellationToken cancellationToken)
+        }
+
+        private async Task GetMoviesWithHttpClientFromFactory(CancellationToken cancellationToken)
         {
             var httpClient = httpClientFactory.CreateClient();
 
@@ -80,7 +86,9 @@ namespace Movies.Client.Services
                 response.EnsureSuccessStatusCode();
                 var trailer = stream.ReadAndDeserializeFromJson<List<Movie>>();
             }
-        }        private async Task GetMoviesWithHttpNamedClientFromFactory(CancellationToken cancellationToken)
+        }
+
+        private async Task GetMoviesWithHttpNamedClientFromFactory(CancellationToken cancellationToken)
         {
             var httpClient = httpClientFactory.CreateClient("MoviesClient");
 
@@ -96,7 +104,9 @@ namespace Movies.Client.Services
                 response.EnsureSuccessStatusCode();
                 var trailer = stream.ReadAndDeserializeFromJson<List<Movie>>();
             }
-        }        //private async Task GetMoviesWithHttpTypedClientFromFactory(CancellationToken cancellationToken)
+        }
+
+        //private async Task GetMoviesWithHttpTypedClientFromFactory(CancellationToken cancellationToken)
         //{
             
         //    var request = new HttpRequestMessage(HttpMethod.Get, "api/movies");
@@ -110,8 +120,11 @@ namespace Movies.Client.Services
         //        response.EnsureSuccessStatusCode();
         //        var movies = stream.ReadAndDeserializeFromJson<List<Movie>>();
         //    }
-        //}        private async Task GetMoviesViaMoviesClient(CancellationToken cancellationToken)
+        //}
+
+        private async Task GetMoviesViaMoviesClient(CancellationToken cancellationToken)
         {
             var movies = await moviesClient.GetMovies(cancellationToken);
-        }    }
+        }
+    }
 }

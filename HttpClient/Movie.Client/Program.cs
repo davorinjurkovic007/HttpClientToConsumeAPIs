@@ -54,7 +54,7 @@ namespace Movies.Client
 
             serviceCollection.AddHttpClient("MoviesClient", client =>
             {
-                client.BaseAddress = new Uri("https://localhost:5001");
+                client.BaseAddress = new Uri("https://localhost:44383");
                 client.Timeout = new TimeSpan(0, 0, 30);
                 client.DefaultRequestHeaders.Clear();
             })
@@ -102,7 +102,10 @@ namespace Movies.Client
             // serviceCollection.AddScoped<IIntegrationService, CancellationService>();
 
             // For the HttpClientFactory demos
-            serviceCollection.AddScoped<IIntegrationService, HttpClientFactoryInstanceManagementService>();
+            // serviceCollection.AddScoped<IIntegrationService, HttpClientFactoryInstanceManagementService>();
+
+            // For the dealing wiht errors and faults demos
+            serviceCollection.AddScoped<IIntegrationService, DealingWithErrorAndFaultsService>();
         }
     }
 }
